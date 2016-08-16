@@ -2,9 +2,20 @@
 var Orbits = (function() {
     var canvas = document.getElementById('c');
     var context = canvas.getContext('2d');
+    var mainBody = {
+        x: canvas.width/2,
+        y: canvas.height/2,
+        radius: 100,
+    };
     var orbits = [];
 
-    function addOrbit(x, y, radiusX, radiusY, rotation) {
+    function addOrbit(body, radiusMaj, radiusMin, rotation) {
+        body = (typeof body === 'undefined') ? mainBody : body;
+        if(radiusMaj >= radiusMin) {
+            var temp = radiusMaj;
+            radiusMaj = radiusMin;
+            radiusMin = temp;
+        }
         // smaller than 255, since we don't want overly light colors
         var max_color = 200;
         var r = Math.floor(Math.random() * max_color);
@@ -12,7 +23,7 @@ var Orbits = (function() {
         var b = Math.floor(Math.random() * max_color);
         var color = 'rgb(' + r + ',' + g + ',' + b + ')';
         console.log('random color: ' + color);
-        orbits.push({x:x, y:y, radiusX:radiusX, radiusY:radiusY,
+        orbits.push({x:body.x, y:body.y, radiusX:radiusMaj, radiusY:radiusMin,
                      rotation:rotation, color:color});
     }
 
@@ -52,21 +63,33 @@ var Orbits = (function() {
 
     function clear() {
         console.log('clearing');
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        orbits = [];
+        draw();
     }
 
     function draw() {
         console.log('drawing');
-        // draw planet
-        drawDisk();
+        context.clearRect(0, 0, canvas.width, canvas.height);
         orbits.forEach(function(o) {
             drawEllipse(o.x, o.y, o.radiusX, o.radiusY, o.rotation, o.color);
         });
+        drawDisk(mainBody.x, mainBody.y, mainBody.radius);
     }
 
     function onLoad() {
-        addOrbit(canvas.width/2, canvas.height/2, 200, 250, 0);
-        draw();
+        var addButton = document.getElementById('add');
+        addButton.onclick = function() {
+            var rmin = Number.parseInt(
+                document.getElementById('radiusMin').value,
+                10);
+            var rmaj = Number.parseInt(
+                document.getElementById('radiusMaj').value,
+                10);
+            addOrbit(mainBody, rmin, rmaj, 0);
+            draw();
+        }
+        addButton.onclick();
+        document.getElementById('clear').onclick = clear;
     }
 
     (function setupOnLoad() {

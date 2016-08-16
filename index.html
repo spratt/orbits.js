@@ -16,9 +16,26 @@
   <body>
     <canvas id="c" width="950" height="650"></canvas>
     <br>
-    <button id="clear">Clear</button>
-    <input id="control1" type="checkbox" checked>
-    <label for="control1">Control1</label>
+    <table width="950">
+      <tr>
+        <td>
+          <label for="radiusMaj">Major radius=</label>
+          <input id="radiusMaj" type="textbox" value="250" /><br >
+          <label for="radiusMin">Minor radius=</label>
+          <input id="radiusMin" type="textbox" value="200" />
+        </td>
+        <td>
+          <button id="add">Add Orbit</button>
+          <button id="clear">Clear</button>
+        </td>
+        <td align="right">
+          <label for="parameter">Parameter, p=</label>
+          <input id="parameter" type="textbox" /><br />
+          <label for="eccentricity">Eccentricity, e=</label>
+          <input id="eccentricity" type="textbox" />
+        </td>
+      </tr>
+    </table>
   </body>
   <script src="orbits.js"></script>
 </html>
