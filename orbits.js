@@ -3,8 +3,8 @@ var Orbits = (function() {
     var canvas = document.getElementById('c');
     var context = canvas.getContext('2d');
     var mainBody = {
-        x: canvas.width/2,
-        y: canvas.height/2,
+        get x() { return canvas.width/2; },
+        get y() { return canvas.height/2; },
         radius: 100,
     };
     var orbits = [];
@@ -76,7 +76,16 @@ var Orbits = (function() {
         drawDisk(mainBody.x, mainBody.y, mainBody.radius);
     }
 
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 70;
+        draw();
+    }
+
     function onLoad() {
+        var useCapture = false;
+        window.addEventListener('resize', resize, useCapture);
+        resize();
         var addButton = document.getElementById('add');
         addButton.onclick = function() {
             var rmin = Number.parseInt(
@@ -85,7 +94,7 @@ var Orbits = (function() {
             var rmaj = Number.parseInt(
                 document.getElementById('radiusMaj').value,
                 10);
-            addOrbit(mainBody, rmin, rmaj, 0);
+            addOrbit(mainBody, rmin, rmaj, Math.PI/2);
             draw();
         }
         addButton.onclick();
