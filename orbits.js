@@ -23,7 +23,7 @@ var Orbits = (function() {
         var b = Math.floor(Math.random() * max_color);
         var color = 'rgb(' + r + ',' + g + ',' + b + ')';
         console.log('random color: ' + color);
-        orbits.push({x:body.x, y:body.y, radiusX:radiusMaj, radiusY:radiusMin,
+        orbits.push({body:body, radiusX:radiusMaj, radiusY:radiusMin,
                      rotation:rotation, color:color});
     }
 
@@ -71,7 +71,8 @@ var Orbits = (function() {
         console.log('drawing');
         context.clearRect(0, 0, canvas.width, canvas.height);
         orbits.forEach(function(o) {
-            drawEllipse(o.x, o.y, o.radiusX, o.radiusY, o.rotation, o.color);
+            drawEllipse(o.body.x, o.body.y, o.radiusX, o.radiusY,
+                        o.rotation, o.color);
         });
         drawDisk(mainBody.x, mainBody.y, mainBody.radius);
     }
